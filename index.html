@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zhixiong Zhang | VLA · 机器人柔顺控制</title>
+<link rel="stylesheet" href="https://unpkg.com/bulma@0.7.5/css/bulma.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+html { scroll-behavior: smooth; }
+body { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC",sans-serif; color: #2c3e50; }
+a { color: #2980b9; }
+a:hover { color: #1a5276; }
+.section { padding: 2.5rem 1.5rem; }
+.sticky { position: sticky; top: 20px; }
+.content h2 { font-size: 1.5rem; font-weight: 700; border-bottom: 2px solid #2980b9; padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+.content h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.3rem; }
+
+/* avatar */
+.details img { width: 160px; border-radius: 50%; margin-bottom: 0.8rem; }
+.details .name { font-size: 1.6rem; font-weight: 700; }
+.details .cn { font-size: 1rem; color: #7f8c8d; margin-bottom: 0.3rem; }
+.details .title-line { font-size: 0.95rem; color: #555; margin-bottom: 0.5rem; }
+.social a { display: inline-block; margin-right: 0.6rem; font-size: 1.1rem; }
+
+/* quick links */
+.quick-links { margin-top: 1.5rem; }
+.quick-links a { display: block; padding: 0.3rem 0; font-size: 0.9rem; color: #555; border-bottom: 1px solid #eee; }
+.quick-links a:hover { color: #2980b9; background: #f8f9fa; text-decoration: none; padding-left: 4px; transition: .2s; }
+
+/* hero teaser */
+.hero-teaser { margin-top: 1.5rem; }
+.hero-teaser img { width: 100%; border-radius: 10px; }
+.hero-teaser .market { font-weight: 700; color: #c0392b; margin-top: 0.8rem; }
+
+/* news */
+.news-item { margin-bottom: 0.4rem; font-size: 0.95rem; }
+.news-item .date { font-weight: 600; color: #2980b9; margin-right: 0.5rem; white-space: nowrap; }
+.tag-sm { font-size: 0.75rem; background: #eaf2f8; color: #2980b9; padding: 1px 6px; border-radius: 3px; margin-right: 4px; }
+
+/* video cards */
+.video-card { display: flex; gap: 1rem; padding: 0.8rem; margin-bottom: 0.8rem; border-radius: 10px; background: #fafbfc; box-shadow: 0 1px 3px rgba(0,0,0,0.06); cursor: pointer; transition: .2s; align-items: center; }
+.video-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.1); transform: translateX(3px); }
+.video-card .thumb { flex-shrink: 0; width: 200px; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; background: #111; position: relative; }
+.video-card .thumb img { width: 100%; height: 100%; object-fit: cover; }
+.video-card .thumb .dur { position: absolute; bottom: 4px; right: 4px; background: rgba(0,0,0,0.75); color: #fff; padding: 1px 5px; border-radius: 3px; font-size: 0.75rem; }
+.video-card .info .vtitle { font-size: 1rem; font-weight: 600; margin-bottom: 0.2rem; }
+.video-card .info .vdesc { font-size: 0.85rem; color: #888; margin-bottom: 0.3rem; }
+.video-card .info .vmeta { font-size: 0.8rem; color: #aaa; }
+
+/* player overlay */
+.player-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; }
+.player-overlay.active { display: flex; }
+.player-overlay .inner { width: 90%; max-width: 900px; position: relative; }
+.player-overlay .inner .ratio { padding-top: 56.25%; position: relative; }
+.player-overlay .inner iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; border-radius: 8px; }
+.player-overlay .close-btn { position: absolute; top: -40px; right: 0; color: #fff; font-size: 2rem; cursor: pointer; background: none; border: none; }
+
+/* gradient bg */
+.gradient-mesh-bg { background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%); min-height: 100vh; }
+
+@media (max-width: 768px) {
+  .video-card { flex-direction: column; }
+  .video-card .thumb { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="gradient-mesh-bg">
+
+<nav class="liquidGL-nav-inner" style="text-align:center;padding:0.8rem;background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;border-bottom:1px solid #eee;font-size:0.9rem;">
+  <a href="#intro" style="margin:0 1rem;color:#555;font-weight:500;">Home</a>
+  <a href="#news" style="margin:0 1rem;color:#555;font-weight:500;">News</a>
+  <a href="#projects" style="margin:0 1rem;color:#555;font-weight:500;">Projects</a>
+  <a href="#education" style="margin:0 1rem;color:#555;font-weight:500;">Education</a>
+  <a href="#competitions" style="margin:0 1rem;color:#555;font-weight:500;">Competitions</a>
+  <a href="/blog/" style="margin:0 1rem;color:#555;font-weight:500;">Blog</a>
+</nav>
+
+<section class="section">
+<div class="container">
+<div class="columns">
+
+<!-- ============ LEFT SIDEBAR ============ -->
+<div class="column is-2">
+<div class="sticky">
+<div class="content">
+<div class="details" style="text-align:center;">
+  <img src="/images/head.jpg" alt="Zhixiong Zhang">
+  <div class="name">Zhixiong Zhang</div>
+  <div class="cn">张志雄</div>
+  <div class="title-line">VLA · 机器人柔顺控制 · 具身智能</div>
+  <div style="font-size:0.85rem;color:#888;">zhixiong.zhang@nuaa.edu.cn</div>
+</div>
+<div class="social" style="text-align:center;margin-top:0.8rem;">
+  <a href="https://space.bilibili.com/633279373" target="_blank" title="Bilibili" style="margin:0 6px;font-size:1.4rem;color:#fb7299;">
+    <svg style="width:1em;height:1em;vertical-align:-0.15em;fill:currentColor;" viewBox="0 0 24 24"><path d="M18.223 3.086a1.25 1.25 0 0 1 0 1.768L17.08 5.996h1.17A3.75 3.75 0 0 1 22 9.747v7.5a3.75 3.75 0 0 1-3.75 3.75H5.75A3.75 3.75 0 0 1 2 17.247v-7.5a3.75 3.75 0 0 1 3.75-3.75h1.166L5.775 4.855a1.25 1.25 0 1 1 1.767-1.768l1.874 1.874a7.54 7.54 0 0 1 5.168 0l1.874-1.874a1.25 1.25 0 0 1 1.768 0h-.003ZM12 9.498a.75.75 0 0 0-.75.75v5.25c0 .414.336.75.75.75s.75-.336.75-.75v-5.25a.75.75 0 0 0-.75-.75ZM8.25 10.5a.75.75 0 0 0-.75.75v3.747c0 .414.336.75.75.75s.75-.336.75-.75V11.25a.75.75 0 0 0-.75-.75Zm7.5 0a.75.75 0 0 0-.75.75v3.747c0 .414.336.75.75.75s.75-.336.75-.75V11.25a.75.75 0 0 0-.75-.75Z"/></svg>
+  </a>
+  <a href="https://github.com/zzx686a" target="_blank" title="GitHub" style="margin:0 6px;font-size:1.4rem;color:#333;">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="/blog/" title="Blog" style="margin:0 6px;font-size:1.4rem;color:#2980b9;">
+    <i class="fas fa-blog"></i>
+  </a>
+  <a href="/gallery/" title="Gallery" style="margin:0 6px;font-size:1.4rem;color:#e67e22;">
+    <i class="fas fa-images"></i>
+  </a>
+</div>
+<div class="quick-links">
+  <a href="#intro">🏠 Intro</a>
+  <a href="#news">📰 News</a>
+  <a href="#projects">🤖 Projects</a>
+  <a href="#education">🎓 Education</a>
+  <a href="#competitions">🏆 Competitions</a>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ============ RIGHT CONTENT ============ -->
+<div class="column">
+
+<!-- INTRO -->
+<div class="content" id="intro">
+  <div class="hero-teaser">
+    <img src="/images/3.jpg" alt="banner" style="width:100%;border-radius:10px;">
+  </div>
+
+  <p style="font-size:1.05rem;line-height:1.9;text-align:justify;">
+  南京航空航天大学机电学院智能机器人控制研究室硕士研究生。本科毕业于武汉科技大学机械自动化学院，曾作为校机器人队电控组成员参加2023年ROBOCON比赛。研究方向为<strong>VLA双臂灵巧操控、机器人柔顺控制</strong>等。
+  </p>
+  <p style="font-size:1.05rem;line-height:1.9;text-align:justify;">
+  <strong>硕士期间：</strong><br>
+  1. 在珞石xmate机械臂及末端六维传感器平台上基于导纳控制算法开展机器人柔顺控制研究，开展了以下工作：自由/阻抗拖动、定点恒力跟踪、轴孔装配与梯形速度直线轨迹跟踪等柔顺操控功能；基于Haption力控遥操作杆的遥操作双边力反馈。<br>
+  2. 在宇树G1人形机器人上搭建了基于LLM的语音交互框架，实现任务拆解与技能调度。随后聚焦VLA技术，设计客户端-服务端架构部署NVIDIA GR00T模型，同时利用宇树xr_teleoperate与PICO 4 Ultra实现双臂遥操作，自主完成数据采集、格式转换、模型微调与真机部署，打通<strong>采-训-推全流程基线</strong>；针对部署中动作不连续导致的抖动，引入RTC方法对输出轨迹进行平滑，使运动更加连贯稳定。
+  </p>
+  <p class="market">🔍 正在寻找机器人与具身智能领域的岗位。</p>
+
+  <div style="margin-top:1.5rem;display:flex;gap:0.8rem;flex-wrap:wrap;">
+    <a class="button is-small" href="mailto:3457109829@qq.com">📧 Email</a>
+    <a class="button is-small" href="https://space.bilibili.com/633279373" target="_blank">📺 Bilibili</a>
+    <a class="button is-small" href="https://github.com/zzx686a" target="_blank">🐙 GitHub</a>
+    <a class="button is-small" href="/blog/">📝 Blog</a>
+  </div>
+</div>
+
+<!-- NEWS -->
+<div class="content" id="news" style="margin-top:2.5rem;">
+  <h2>📰 News</h2>
+  <div class="news-item"><span class="date">2026/07</span> <span class="tag-sm">VLA</span> 采用Physical Intelligence的RTC方法解决了真机部署中的抖动与动作不连续问题</div>
+  <div class="news-item"><span class="date">2026/06</span> <span class="tag-sm">VLA</span> 基于客户端-服务端架构，将NVIDIA Isaac GR00T N1.5模型真机部署至宇树G1，打通采-训-推全链路</div>
+  <div class="news-item"><span class="date">2026/04</span> <span class="tag-sm">项目</span> 实现基于VR的人形机器人遥操作与数据采集平台，末端支持Inspire RH56系列两款五指灵巧手及Dex1-1二指夹爪驱动</div>
+  <div class="news-item"><span class="date">2026/01</span> <span class="tag-sm">VLA</span> 正式开始具身智能VLA研究</div>
+  <div class="news-item"><span class="date">2025/12</span> <span class="tag-sm">项目</span> 在宇树G1与Kwen大模型平台上，实现基于LLM的语音交互功能，实时理解人类指令并拆解为原子动作后执行</div>
+  <div class="news-item"><span class="date">2025/11</span> <span class="tag-sm">项目</span> 在Matlab完成导纳控制仿真，随后展开实机验证，完成自由拖动、阻抗拖动、基于梯形速度规划的直线轨迹恒力跟踪及轴孔装配实验</div>
+  <div class="news-item"><span class="date">2025/10</span> <span class="tag-sm">项目</span> 基于珞石xmate7机械臂与坤维六维力传感器，实现机械臂的负载辨识与重力补偿</div>
+  <div class="news-item"><span class="date">2025/09</span> <span class="tag-sm">学业</span> 进入南京航空航天大学攻读硕士学位。在珞石SR3六轴机械臂、坤维六维力传感器与Haption力控遥操作杆平台，基于导纳控制实现双边力反馈遥操作</div>
+  <div class="news-item"><span class="date">2025/05</span> <span class="tag-sm">学业</span> 加入智能机器人控制研究室</div>
+  <div class="news-item"><span class="date">2025/04</span> <span class="tag-sm">学业</span> 考入南京航空航天大学</div>
+  <div class="news-item more-news" style="display:none;"><span class="date">2024/06</span> <span class="tag-sm">荣誉</span> 武汉科技大学优秀毕业生 · 校级优秀毕业设计二等奖</div>
+  <div class="news-item more-news" style="display:none;"><span class="date">2023/08</span> <span class="tag-sm">比赛</span> 全国大学生起重机创新创意大赛 华中赛区二等奖</div>
+  <div class="news-item more-news" style="display:none;"><span class="date">2023/07</span> <span class="tag-sm">比赛</span> 全国大学生机器人大赛（ROBOCON）全国三等奖</div>
+  <div class="news-item more-news" style="display:none;"><span class="date">2022/08</span> <span class="tag-sm">比赛</span> TI杯全国大学生电子设计大赛 湖北省三等奖</div>
+  <div class="news-item more-news" style="display:none;"><span class="date">2022/07</span> <span class="tag-sm">比赛</span> 全国三维数字化与产品信息建模大赛 湖北省二等奖</div>
+  <div class="news-item more-news" style="display:none;"><span class="date">2021/07</span> <span class="tag-sm">比赛</span> 全国大学生英语大赛 全国三等奖</div>
+  <div class="news-item more-news" style="display:none;"><span class="date">2021/07</span> <span class="tag-sm">比赛</span> 全国大学生先进成图与产品信息建模大赛 全国三等奖</div>
+  <div class="news-item more-news" style="display:none;"><span class="date">2020/09</span> <span class="tag-sm">学业</span> 进入武汉科技大学机械自动化学院，开始本科学习</div>
+  <div style="text-align:center;margin-top:0.8rem;"><a href="javascript:toggleNews()" id="newsToggle" style="font-size:0.9rem;">[Show more]</a></div>
+</div>
+
+<!-- PROJECTS -->
+<div class="content" id="projects" style="margin-top:2.5rem;">
+  <h2>🤖 Projects & Videos</h2>
+  <div id="videoList"></div>
+</div>
+
+<!-- EDUCATION -->
+<div class="content" id="education" style="margin-top:2.5rem;">
+  <h2>🎓 Education</h2>
+
+  <div style="display:flex;gap:1rem;margin-bottom:1.5rem;align-items:flex-start;">
+    <img src="/images/NUAA.png" alt="NUAA" style="width:48px;height:48px;border-radius:10px;object-fit:contain;flex-shrink:0;">
+    <div>
+      <h3>南京航空航天大学</h3>
+      <div style="color:#666;font-size:0.95rem;">机电学院 · 智能机器人控制研究室 · 硕士</div>
+
+      <div style="color:#999;font-size:0.85rem;">2025 - 至今</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:1rem;margin-bottom:1.5rem;align-items:flex-start;">
+    <img src="/images/WUST.png" alt="WUST" style="width:48px;height:48px;border-radius:10px;object-fit:contain;flex-shrink:0;">
+    <div>
+      <h3>武汉科技大学</h3>
+      <div style="color:#666;font-size:0.95rem;">机械自动化学院 · 中精机器人团队 · 学士</div>
+      <div style="color:#999;font-size:0.85rem;">2020 - 2024</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- COMPETITIONS -->
+<div class="content" id="competitions" style="margin-top:2.5rem;">
+  <h2>🏆 Competitions & Activities</h2>
+
+  <div style="display:flex;gap:1rem;margin-bottom:1.5rem;align-items:flex-start;">
+    <img src="/images/ROBOCON.png" alt="ROBOCON" style="width:48px;height:48px;border-radius:10px;object-fit:contain;flex-shrink:0;">
+    <div>
+      <h3>ROBOCON 机器人队</h3>
+      <div style="color:#666;font-size:0.95rem;">校机器人队电控组成员 · 2023 ROBOCON 马术项目</div>
+      <div style="color:#999;font-size:0.85rem;">2022 - 2023</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:1rem;margin-bottom:1.5rem;align-items:flex-start;">
+    <div style="width:48px;height:48px;background:#eaf2f8;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">🏗️</div>
+    <div>
+      <h3>起重机大赛</h3>
+      <div style="color:#666;font-size:0.95rem;">队长、电控组负责人 · 第七届（2022）、第八届（2023）</div>
+      <div style="color:#999;font-size:0.85rem;">2022 - 2023</div>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- /column -->
+</div><!-- /columns -->
+</div><!-- /container -->
+</section>
+
+<footer style="text-align:center;padding:2rem;color:#999;font-size:0.85rem;">
+  Updated: 2026.08 · Zhixiong Zhang
+</footer>
+
+</div><!-- /gradient-mesh-bg -->
+
+<!-- PLAYER OVERLAY -->
+<div class="player-overlay" id="playerOverlay">
+  <div class="inner">
+    <button class="close-btn" onclick="closePlayer()">&times;</button>
+    <div class="ratio" id="playerContainer"></div>
+  </div>
+</div>
+
+<script>
+function toggleNews() {
+  var items = document.querySelectorAll('.more-news');
+  var btn = document.getElementById('newsToggle');
+  var show = items[0].style.display === 'none' || !items[0].style.display;
+  items.forEach(function(i) { i.style.display = show ? 'block' : 'none'; });
+  btn.textContent = show ? '[Show less]' : '[Show more]';
+}
+
+function openPlayer(bvid) {
+  document.getElementById('playerContainer').innerHTML = '<iframe src="//player.bilibili.com/player.html?bvid=' + bvid + '&high_quality=1&danmaku=1&autoplay=1" allowfullscreen></iframe>';
+  document.getElementById('playerOverlay').classList.add('active');
+}
+function closePlayer() {
+  document.getElementById('playerOverlay').classList.remove('active');
+  document.getElementById('playerContainer').innerHTML = '';
+}
+document.getElementById('playerOverlay').addEventListener('click', function(e) { if(e.target===this) closePlayer(); });
+
+function fmt(n) { return n>=10000 ? (n/10000).toFixed(1)+'万' : n; }
+
+(function(){
+  var videos = [{"bvid":"BV1U8gz6HEeY","title":"丝滑了不少","pic":"https://i1.hdslb.com/bfs/archive/1769cfadea648f38bcdeeafb839ac5728cb9a967.jpg","play":601,"comment":10,"created":1784686046,"length":"00:16","description":"-"},{"bvid":"BV1ThE364Ecp","title":"GR00T VLA真机部署求助","pic":"https://i2.hdslb.com/bfs/archive/d06f946437090a4884c108dd108c007240a3d853.jpg","play":2194,"comment":42,"created":1780935892,"length":"01:08","description":"打通采-训-推pipeline，但还有很多工程的地方需要优化。"},{"bvid":"BV1FC5z67EgG","title":"VR遥操作","pic":"https://i2.hdslb.com/bfs/archive/23fbf878d79ef9ca4c82b90e4385d09c55033c00.jpg","play":420,"comment":1,"created":1778890893,"length":"00:33","description":"-"},{"bvid":"BV1hwcqz6EAr","title":"六点法负载辨识","pic":"https://i1.hdslb.com/bfs/archive/bb50b99bc329e6c2e56c5d9be9948f2b1ad49d6b.jpg","play":825,"comment":4,"created":1770906099,"length":"00:40","description":""},{"bvid":"BV1wFc4zwEk6","title":"[转载] Haption 6自由度工业级力反馈遥操作机械臂设备","pic":"https://i0.hdslb.com/bfs/archive/b50e7a027aad44447ec1b1b7664d054fe9e3811f.jpg","play":144,"comment":0,"created":1770815092,"length":"01:45","description":"https://www.bilibili.com/video/BV1pXoCY1EyL/?spm_id_from=333.1387.search.video_card.click"},{"bvid":"BV11wcgzRE95","title":"自由拖动","pic":"https://i0.hdslb.com/bfs/archive/39f7ffb50599bfc76bde7902c181dffa470e39f9.jpg","play":228,"comment":0,"created":1770647120,"length":"00:28","description":""},{"bvid":"BV1CMcgzDE6p","title":"梯形速度规划直线轨迹恒力跟踪","pic":"https://i1.hdslb.com/bfs/archive/c6cc3a4c13ac6a6c2931942f72d0888fb8d16a0c.jpg","play":305,"comment":0,"created":1770646276,"length":"00:24","description":""},{"bvid":"BV1NNcgz9EeE","title":"遥操作双边力反馈","pic":"https://i1.hdslb.com/bfs/archive/b00953b62e7a7e11fc9ce0783a922da3ec3cfa8d.jpg","play":167,"comment":0,"created":1770645782,"length":"00:13","description":""},{"bvid":"BV1NNcgz9E8m","title":"定点恒力跟踪","pic":"https://i0.hdslb.com/bfs/archive/080cd4b3615baeebd65a550b08550dc496e1a729.jpg","play":632,"comment":1,"created":1770645734,"length":"00:38","description":""},{"bvid":"BV1GDcuzPEmG","title":"阻抗拖动","pic":"https://i1.hdslb.com/bfs/archive/17eb3f294be50b58ab84f1ef49d9daec449b1b37.jpg","play":395,"comment":7,"created":1770645103,"length":"00:22","description":""},{"bvid":"BV1kihmekEhn","title":"第九届起重机大赛 （门式起重机）","pic":"https://i1.hdslb.com/bfs/archive/700367e526052f0f6c572a2dca9258cb6b58cdf9.jpg","play":2497,"comment":9,"created":1720335160,"length":"00:30","description":"-"},{"bvid":"BV1t14y167bJ","title":"第八届起重机大赛（塔吊式起重机）","pic":"https://i2.hdslb.com/bfs/archive/c5ab3ed99bc87628ef40723a4bc49c6fa3d7db49.jpg","play":3401,"comment":8,"created":1690835834,"length":"03:55","description":"-"},{"bvid":"BV1fV4y187Sp","title":"Robocon 2023 马术","pic":"https://i0.hdslb.com/bfs/archive/4265587323d4fdec055e24a77fc72f2706ee166e.jpg","play":6205,"comment":33,"created":1688710235,"length":"04:42","description":"-"},{"bvid":"BV14V411g7u1","title":"机械专业画的第一块板子，求大佬纠错","pic":"https://i0.hdslb.com/bfs/archive/5f97ea4984dd74ca847e1529e12d8c72c68c150c.jpg","play":4021,"comment":64,"created":1688056542,"length":"00:40","description":"-"},{"bvid":"BV1RD4y1H7Mr","title":"襄阳五中2020届高三20班回忆录","pic":"https://i0.hdslb.com/bfs/archive/fa08a8ea01924c99c6f8d72f5e9f5467412877c2.jpg","play":3565,"comment":35,"created":1673975441,"length":"08:24","description":"该视频是由冯学谦班长提议并收集到各个同学的照片后制作，在此仅作纪念，那段再也回不去的日子。"},{"bvid":"BV1U24y1Z7KR","title":"2022TI杯电赛","pic":"https://i2.hdslb.com/bfs/archive/f95495555f9556d3e19b9e63b1b5b63372c9f55d.jpg","play":288,"comment":1,"created":1663078376,"length":"01:44","description":"算是水一条视频，记录起重机大赛之前跟学长学姐打的电赛，没有完赛，比赛那天两辆车围着场地跑了三圈 虽然只有省三，但那段日子还是挺值得怀念的"},{"bvid":"BV1Mg411S73a","title":"第七届物流起重机大赛（龙门起重机）","pic":"https://i1.hdslb.com/bfs/archive/9afa8a90d35b1ef654e2b57f366e963ce3e34a33.jpg","play":4580,"comment":18,"created":1662126533,"length":"02:33","description":"落榜组 比赛由于场地原因开始传感器就误判了一箱没抓\n之前正常调试差不多一分五十秒\n留校整个暑假 没有遗憾是不可能的\n2023大三下再战"}];
+  var exclude = ['BV1wFc4zwEk6','BV14V411g7u1','BV1RD4y1H7Mr'];
+  videos = videos.filter(function(v){ return exclude.indexOf(v.bvid) === -1; });
+  var el = document.getElementById('videoList');
+  if(!videos.length){ el.innerHTML='<p style="color:#999;">暂无视频</p>'; return; }
+  el.innerHTML = videos.map(function(v){
+    var desc = (v.description && v.description !== '-') ? v.description : '';
+    return '<div class="video-card" onclick="openPlayer(\''+v.bvid+'\')">'
+      + '<div class="thumb"><img src="'+v.pic+'" alt="'+v.title+'" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'"><span class="dur">'+v.length+'</span></div>'
+      + '<div class="info"><div class="vtitle">'+v.title+'</div>'
+      + (desc?'<div class="vdesc">'+desc+'</div>':'')
+      + '<div class="vmeta"><span>▶ '+fmt(v.play)+'</span> &nbsp; 💬 '+v.comment+'</div></div></div>';
+  }).join('');
+})();
+</script>
+
+</body>
+</html>
